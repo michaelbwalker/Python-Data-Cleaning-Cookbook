@@ -16,11 +16,15 @@ pprint.pprint(camcollections['data'][0])
 
 # flatten the data
 camcollectionsdf = pd.json_normalize(camcollections['data'], 'citations', ['accession_number','title','creation_date','collection','creators','type'])
-print(camcollectionsdf.head(2).T)
-creator = camcollectionsdf[0:1].creators[0]
-print(type(creator[0]))
+camcollectionsdf.head(2).T
+
+# get birth year from the creators list
+creator = camcollectionsdf[:1].creators[0]
+creator[0]['birth_year']
 pprint.pprint(creator)
-camcollectionsdf['birthyear'] = pd.to_numeric(camcollectionsdf.creators[0][0]['birth_year'])
-print(camcollectionsdf.head(2).T)
+camcollectionsdf['birthyear'] = camcollectionsdf.\
+  creators.apply(lambda x: x[0]['birth_year'])
+camcollectionsdf.birthyear.value_counts().\
+  sort_index().head()
 
-
+camcollectionsdf[:1].creators[0]

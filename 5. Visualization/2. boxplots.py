@@ -5,8 +5,10 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.0f}'.format
-covidtotals = pd.read_pickle("data/covidtotals720.pkl")
-nls97 = pd.read_pickle("data/nls97.pkl")
+nls97 = pd.read_csv("data/nls97.csv")
+nls97.set_index("personid", inplace=True)
+covidtotals = pd.read_csv("data/covidtotals.csv", parse_dates=["lastdate"])
+covidtotals.set_index("iso_code", inplace=True)
 
 # do a boxplot for SAT verbal
 nls97.satverbal.describe()
@@ -24,8 +26,6 @@ plt.show()
 weeksworked = nls97.loc[:, ['highestdegree','weeksworked16',\
   'weeksworked17']]
 weeksworked.describe()
-weeksworked.weeksworked16.skew()
-weeksworked.weeksworked17.skew()
 
 # do a box plot of weeks worked in 2016 and 2017
 plt.boxplot([weeksworked.weeksworked16.dropna(),

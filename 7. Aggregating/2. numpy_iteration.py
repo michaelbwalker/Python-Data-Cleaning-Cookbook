@@ -5,8 +5,8 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.2f}'.format
-coviddaily = pd.read_pickle("data/coviddaily720.pkl")
-ltbrazil = pd.read_pickle("data/ltbrazil.pkl")
+coviddaily = pd.read_csv("data/coviddaily720.csv", parse_dates=["casedate"])
+ltbrazil = pd.read_csv("data/ltbrazil.csv")
 
 # create a list of locations
 loclist = coviddaily.location.unique().tolist()

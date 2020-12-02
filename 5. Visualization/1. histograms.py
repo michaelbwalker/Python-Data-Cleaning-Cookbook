@@ -7,11 +7,13 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 12)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.0f}'.format
-landtemps = pd.read_pickle("data/landtemps2019avgs.pkl")
-covidtotals = pd.read_pickle("data/covidtotals720.pkl")
+landtemps = pd.read_csv("data/landtemps2019avgs.csv")
+covidtotals = pd.read_csv("data/covidtotals.csv", parse_dates=["lastdate"])
+covidtotals.set_index("iso_code", inplace=True)
 
 # show some of the temperature rows 
-landtemps[['station','country','latabs','elevation','avgtemp']].sample(20)
+landtemps[['station','country','latabs','elevation','avgtemp']].\
+  sample(10, random_state=1)
 
 # generate some descriptive statistics on the temperatures data
 landtemps.describe()
@@ -36,11 +38,14 @@ covidtotals.total_cases_pm.skew()
 covidtotals.total_cases_pm.kurtosis()
 
 # do a stacked histogram
-showregions = ['Oceania / Aus','East Asia','Africa (other)','Western Europe']
-plt.hist([covidtotals.loc[covidtotals.region=='Oceania / Aus'].total_cases_pm,\
-  covidtotals.loc[covidtotals.region=='East Asia'].total_cases_pm,\
-  covidtotals.loc[covidtotals.region=='Africa (other)'].total_cases_pm,\
-  covidtotals.loc[covidtotals.region=='Western Europe'].total_cases_pm],\
+showregions = ['Oceania / Aus','East Asia','Southern Africa',
+  'Western Europe']
+
+def getcases(regiondesc):
+  return covidtotals.loc[covidtotals.region==regiondesc,
+    'total_cases_pm']
+
+plt.hist([getcases(k) for k in showregions],\
   color=['blue','mediumslateblue','plum','mediumvioletred'],\
   label=showregions,\
   stacked=True)
@@ -66,8 +71,4 @@ for j, ax in enumerate(axes):
 plt.tight_layout()
 fig.subplots_adjust(top=0.88)
 plt.show()
-
-temp = covidtotals.loc[covidtotals.region.isin(showregions)]
-temp.shape
-temp[['location','total_cases_pm']].sort_values('total_cases_pm')
 

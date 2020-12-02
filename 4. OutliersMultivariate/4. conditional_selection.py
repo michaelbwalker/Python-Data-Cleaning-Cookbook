@@ -5,12 +5,14 @@ pd.set_option('display.width', 78)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 100)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+nls97 = pd.read_csv("data/nls97.csv")
+nls97.set_index("personid", inplace=True)
 
 # look at some of the nls data
 nls97[['wageincome','highestgradecompleted','highestdegree']].head(3).T
+
 nls97.loc[:, "weeksworked12":"weeksworked17"].head(3).T
-nls97.loc[:, "colenroct00":"colenroct04"].head(3).T
+nls97.loc[:, "colenroct09":"colenrfeb14"].head(3).T
 
 # show individuals with wage income but no weeks worked
 nls97.loc[(nls97.weeksworked16==0) & nls97.wageincome>0, ['weeksworked16','wageincome']]
@@ -44,9 +46,11 @@ highwages = nls97.loc[nls97.wageincome > nls97.wageincome.mean()+(nls97.wageinco
 highwages
 
 # show individuals with large changes in weeks worked in the most recent year
-workchanges = nls97.loc[~nls97.loc[:, "weeksworked12":"weeksworked16"].\
-    mean(axis=1).between(nls97.weeksworked17*0.5,nls97.weeksworked17*2) &\
-    ~nls97.weeksworked17.isnull(), "weeksworked12":"weeksworked17"]
+workchanges = nls97.loc[~nls97.loc[:,
+  "weeksworked12":"weeksworked16"].mean(axis=1).\
+  between(nls97.weeksworked17*0.5,nls97.weeksworked17*2) \
+  & ~nls97.weeksworked17.isnull(), 
+  "weeksworked12":"weeksworked17"]
 len(workchanges)
 workchanges.head(7).T
 

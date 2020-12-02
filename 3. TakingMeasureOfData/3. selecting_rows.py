@@ -4,11 +4,13 @@ import numpy as np
 pd.set_option('display.width', 75)
 pd.set_option('display.max_columns', 5)
 pd.set_option('display.max_rows', 20)
-pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+pd.options.display.float_format = '{:,.2f}'.format
+nls97 = pd.read_csv("data/nls97.csv")
+nls97.set_index("personid", inplace=True)
 
 # use slicing to select a few rows
 nls97[1000:1004].T
+
 nls97[1000:1004:2].T
 
 # select first 3 rows using head() and Python slicing
@@ -27,7 +29,6 @@ nls97.iloc[[0,1,2]].T
 nls97.iloc[0:3].T
 nls97.iloc[[-3,-2,-1]].T
 nls97.iloc[-3:].T
-nls97.iloc[8981:].T
 
 # select multiple rows conditionally
 nls97.nightlyhrssleep.quantile(0.05)
@@ -39,7 +40,7 @@ lowsleep = nls97.loc[nls97.nightlyhrssleep<=4]
 lowsleep.shape
 
 # select rows based on multiple conditions
-nls97.childathome.describe()
+lowsleep.childathome.describe()
 lowsleep3pluschildren = nls97.loc[(nls97.nightlyhrssleep<=4) & (nls97.childathome>=3)]
 lowsleep3pluschildren.shape
 

@@ -3,16 +3,15 @@ import pandas as pd
 import os
 import sys
 import pprint
-nls97 = pd.read_pickle("data/nls97f.pkl")
-covidtotals = pd.read_pickle("data/covidtotals720.pkl")
+nls97 = pd.read_csv("data/nls97f.csv")
+nls97.set_index('personid', inplace=True)
+covidtotals = pd.read_csv("data/covidtotals720.csv")
 
 # import the outliers module
 sys.path.append(os.getcwd() + "/helperfunctions")
 import outliers as ol
 # import importlib
-
-importlib.reload(ol)
-
+#importlib.reload(ol)
 pd.set_option('display.width', 72)
 pd.set_option('display.max_columns', 5)
 pd.set_option('display.max_rows', 100)
@@ -33,4 +32,3 @@ outliers.to_excel("views/nlsoutliers.xlsx")
 ol.makeplot(nls97.satmath, "Histogram of SAT Math", "SAT Math")
 ol.makeplot(nls97.satmath, "Boxplot of SAT Math", "SAT Math", "box")
 
-nls97.dtypes

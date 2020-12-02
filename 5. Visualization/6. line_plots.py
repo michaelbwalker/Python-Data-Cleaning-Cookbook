@@ -8,10 +8,10 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 20)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.0f}'.format
-coviddaily = pd.read_pickle("data/coviddaily720.pkl")
+coviddaily = pd.read_csv("data/coviddaily720.csv", parse_dates=["casedate"])
 
 # look at a couple of sample rows of the covid daily data
-coviddaily.sample(2).T
+coviddaily.sample(2, random_state=1).T
 
 # calculate new cases and deaths by day
 coviddailytotals = coviddaily.loc[coviddaily.casedate.between('2020-02-01','2020-07-12')].\
@@ -19,7 +19,7 @@ coviddailytotals = coviddaily.loc[coviddaily.casedate.between('2020-02-01','2020
   sum().\
   reset_index()
 
-coviddailytotals.sample(7)
+coviddailytotals.sample(7, random_state=1)
 
 # show line charts for new cases and new deaths by day
 fig = plt.figure()
@@ -41,26 +41,28 @@ regiontotals = coviddaily.loc[coviddaily.casedate.between('2020-02-01','2020-07-
   groupby(['casedate','region'])[['new_cases','new_deaths']].\
   sum().\
   reset_index()
-regiontotals.sample(7)
+regiontotals.sample(7, random_state=1)
 
 # show plot of new cases by selected regions
-ea, we, na, af = regiontotals.loc[regiontotals.region=="East Asia"],\
-  regiontotals.loc[regiontotals.region=="Western Europe"],\
-  regiontotals.loc[regiontotals.region=="North America"],\
-  regiontotals.loc[regiontotals.region=="Africa (other)"]
-ax = plt.subplot()
-ax.plot(ea.casedate, ea.new_cases, label="East Asia")
-ax.plot(we.casedate, we.new_cases, label="Western Europe")
-ax.plot(na.casedate, na.new_cases, label="North America")
-ax.plot(af.casedate, af.new_cases, label="Africa (other)")
-ax.xaxis.set_major_formatter(DateFormatter("%b"))
+showregions = ['East Asia','Southern Africa','North America',
+  'Western Europe']
+
+for j in range(len(showregions)):
+  rt = regiontotals.loc[regiontotals.region==showregions[j],
+    ['casedate','new_cases']]
+  plt.plot(rt.casedate, rt.new_cases, label=showregions[j])
+
 plt.title("New Covid Cases By Day and Region in 2020")
+plt.gca().get_xaxis().set_major_formatter(DateFormatter("%b"))
 plt.ylabel("New Cases")
 plt.legend()
 plt.show()
 
-sa = coviddaily.loc[coviddaily.location=='South Africa',['casedate','new_cases']].rename(columns={'new_cases':'sacases'})
-af = af[['casedate','new_cases']].rename(columns={'new_cases':'afcases'})
+# take a closer look at the South Africa counts
+af = regiontotals.loc[regiontotals.region=='Southern Africa',
+  ['casedate','new_cases']].rename(columns={'new_cases':'afcases'})
+sa = coviddaily.loc[coviddaily.location=='South Africa',
+  ['casedate','new_cases']].rename(columns={'new_cases':'sacases'})
 af = pd.merge(af, sa, left_on=['casedate'], right_on=['casedate'], how="left")
 af.sacases.fillna(0, inplace=True)
 af['afcasesnosa'] = af.afcases-af.sacases
@@ -68,9 +70,10 @@ afabb = af.loc[af.casedate.between('2020-04-01','2020-07-12')]
 
 fig = plt.figure()
 ax = plt.subplot()
-ax.stackplot(afabb.casedate, afabb.sacases, afabb.afcasesnosa, labels=['South Africa','Other Africa'])
+ax.stackplot(afabb.casedate, afabb.sacases, afabb.afcasesnosa, labels=['South Africa','Other Southern Africa'])
 ax.xaxis.set_major_formatter(DateFormatter("%m-%d"))
-plt.title("New Covid Cases in Africa")
+plt.title("New Covid Cases in Southern Africa")
 plt.tight_layout()
 plt.legend(loc="upper left")
 plt.show()
+

@@ -6,7 +6,8 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 20)
 pd.options.display.float_format = '{:,.0f}'.format
-covidtotals = pd.read_pickle("data/covidtotalswithmissing.pkl")
+covidtotals = pd.read_csv("data/covidtotalswithmissings.csv")
+covidtotals.set_index("iso_code", inplace=True)
 
 # set up the cumulative and demographic columns
 totvars = ['location','total_cases','total_deaths','total_cases_pm',
@@ -34,4 +35,3 @@ covidtotals.total_deaths_pm.fillna(covidtotals.total_deaths/
   (covidtotals.population/1000000), inplace=True)
 covidtotals[totvars].isnull().sum(axis=0)
 
-covidtotals.to_pickle("data/covidtotals.pkl")

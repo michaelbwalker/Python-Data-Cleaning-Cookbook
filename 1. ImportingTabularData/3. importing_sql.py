@@ -8,11 +8,11 @@ pd.set_option('display.max_columns', 5)
 pd.options.display.float_format = '{:,.2f}'.format
 
 # set sql select statement to pull the data
-sqlselect = "Select studentid, school, sex, age, famsize,\
-  medu As mothereducation, fedu As fathereducation,\
+query = "SELECT studentid, school, sex, age, famsize,\
+  medu AS mothereducation, fedu AS fathereducation,\
   traveltime, studytime, failures, famrel, freetime,\
-  goout, g1 As gradeperiod1, g2 As gradeperiod2,\
-  g3 As gradeperiod3 From studentmath"
+  goout, g1 AS gradeperiod1, g2 AS gradeperiod2,\
+  g3 AS gradeperiod3 From studentmath"
 
 # use the pymssql api and read_sql to retrieve and load data from a SQL Server instance
 server = "pdcc.c9sqqzd5fulv.us-west-2.rds.amazonaws.com"
@@ -21,7 +21,7 @@ password = "pdccpass"
 database = "pdcctest"
 conn = pymssql.connect(server=server,
   user=user, password=password, database=database)
-studentmath = pd.read_sql(sqlselect,conn)
+studentmath = pd.read_sql(query,conn)
 conn.close()
 
 # use the mysql api and read_sql to retrieve and load data from mysql

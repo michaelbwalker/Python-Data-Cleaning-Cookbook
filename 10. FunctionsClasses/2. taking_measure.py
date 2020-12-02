@@ -2,7 +2,8 @@
 import pandas as pd
 import os
 import sys
-nls97 = pd.read_pickle("data/nls97f.pkl")
+nls97 = pd.read_csv("data/nls97f.csv")
+nls97.set_index('personid', inplace=True)
 
 # import the basicdescriptives module
 sys.path.append(os.getcwd() + "/helperfunctions")
@@ -25,6 +26,9 @@ missingsbycols, missingsbyrows = bd.getmissings(nls97[['weeksworked16','weekswor
 missingsbyrows
 
 # do frequencies for categorical columns
+nls97.loc[:, nls97.dtypes == 'object'] = \
+  nls97.select_dtypes(['object']). \
+  apply(lambda x: x.astype('category'))
 bd.makefreqs(nls97, "views/nlsfreqs.txt")
 
 # do counts and percentages by groups

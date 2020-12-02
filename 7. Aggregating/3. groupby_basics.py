@@ -5,7 +5,7 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 50)
 pd.options.display.float_format = '{:,.0f}'.format
-coviddaily = pd.read_pickle("data/coviddaily720.pkl")
+coviddaily = pd.read_csv("data/coviddaily720.csv", parse_dates=["casedate"])
 
 # create a pandas groupby data frame
 countrytots = coviddaily.groupby(['location'])
@@ -21,7 +21,8 @@ countrytots.get_group('Zimbabwe').iloc[0:5, 0:5]
 
 # loop through the groups
 for name, group in countrytots:
-  print(group.iloc[0:5, 0:5])
+  if (name in ['Malta','Kuwait']):
+    print(group.iloc[0:5, 0:5])
 
 # show the number of rows for each country
 countrytots.size()

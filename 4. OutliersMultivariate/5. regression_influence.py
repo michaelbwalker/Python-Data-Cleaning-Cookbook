@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 pd.set_option('display.width', 85)
-pd.options.display.float_format = '{:,.2f}'.format
-
-covidtotals = pd.read_pickle("data/covidtotals.pkl")
+pd.options.display.float_format = '{:,.0f}'.format
+covidtotals = pd.read_csv("data/covidtotals.csv")
+covidtotals.set_index("iso_code", inplace=True)
 
 # create an analysis file
 xvars = ['pop_density','median_age','gdp_per_capita']

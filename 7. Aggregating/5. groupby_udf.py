@@ -5,11 +5,12 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.1f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+nls97 = pd.read_csv("data/nls97b.csv")
+nls97.set_index("personid", inplace=True)
+
 # create a function for calculating interquartile range
 def iqr(x):
   return x.quantile(0.75) - x.quantile(0.25)
-
 
 # run the interquartile range function
 aggdict = {'weeksworked06':['count', 'mean', iqr], 'childathome':['count', 'mean', iqr]}

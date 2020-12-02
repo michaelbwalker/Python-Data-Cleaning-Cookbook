@@ -2,7 +2,8 @@
 import pandas as pd
 import os
 import sys
-nls97 = pd.read_pickle("data/nls97f.pkl")
+nls97 = pd.read_csv("data/nls97f.csv")
+nls97.set_index('personid', inplace=True)
 
 # import the basicdescriptives module
 sys.path.append(os.getcwd() + "/helperfunctions")

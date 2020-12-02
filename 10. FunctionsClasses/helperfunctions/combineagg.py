@@ -59,12 +59,12 @@ def addfiles(directory):
 
   # loop through the files
   for filename in os.listdir(directory):
-    if filename.endswith(".pkl"): 
+    if filename.endswith(".csv"): 
       fileloc = os.path.join(directory, filename)
 
       # open the next file
       with open(fileloc) as f:
-        dfnew = pd.read_pickle(fileloc)
+        dfnew = pd.read_csv(fileloc)
         print(filename + " has " + str(dfnew.shape[0]) + " rows.")
         dfout = pd.concat([dfout, dfnew])
 

@@ -9,7 +9,8 @@ pd.set_option('display.width', 85)
 pd.set_option('display.max_columns', 6)
 pd.set_option('display.max_rows', 20)
 pd.options.display.float_format = '{:,.0f}'.format
-covidtotals = pd.read_pickle("data/covidtotals.pkl")
+covidtotals = pd.read_csv("data/covidtotals.csv")
+covidtotals.set_index("iso_code", inplace=True)
 
 # set up the cumulative and demographic columns
 totvars = ['location','total_cases','total_deaths','total_cases_pm',
@@ -36,10 +37,12 @@ testnorm("total_cases_pm", covidtotalsonly)
 testnorm("total_deaths_pm", covidtotalsonly)
 
 # show a qqplot for total cases and total cases per million
-sm.qqplot(covidtotalsonly[['total_cases']].sort_values(['total_cases']), line='s')
+sm.qqplot(covidtotalsonly[['total_cases']]. \
+  sort_values(['total_cases']), line='s')
 plt.title("QQ Plot of Total Cases")
 
-sm.qqplot(covidtotals[['total_cases_pm']].sort_values(['total_cases_pm']), line='s')
+sm.qqplot(covidtotals[['total_cases_pm']]. \
+  sort_values(['total_cases_pm']), line='s')
 plt.title("QQ Plot of Total Cases Per Million")
 plt.show()
 
@@ -66,13 +69,15 @@ def getoutliers():
   return dfout
 
 outliers = getoutliers()
-outliers.varname.value_counts(sort=False)
+outliers.varname.value_counts()
 outliers.to_excel("views/outlierscases.xlsx")
 
 # look a little more closely at outliers for cases per million
 outliers.loc[outliers.varname=="total_cases_pm",\
-  ['location','total_cases_pm','total_deaths_pm','median_age']].\
+  ['location','total_cases_pm','pop_density','gdp_per_capita']].\
   sort_values(['total_cases_pm'], ascending=False)
+
+covidtotals[['pop_density','gdp_per_capita']].quantile([0.25,0.5,0.75])
 
 # show the total cases histogram again
 plt.hist(covidtotalsonly['total_cases']/1000, bins=7)
@@ -84,7 +89,7 @@ plt.show()
 # do a log transformation of the covid data
 covidlogs = covidtotalsonly.copy()
 for col in covidtotalsonly.columns[1:]:
-  covidlogs[col] = np.log(covidlogs[col]+1)
+  covidlogs[col] = np.log1p(covidlogs[col])
 
 plt.hist(covidlogs['total_cases'], bins=7)
 plt.title("Total Covid Cases (log)")

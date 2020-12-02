@@ -4,11 +4,15 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 12)
 pd.set_option('display.max_rows', 100)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+nls97 = pd.read_csv("data/nls97c.csv")
+nls97.set_index("personid", inplace=True)
 
 # set up school record and demographic data frames from the NLS data
-schoolrecordlist = ['satverbal','satmath','gpaoverall','gpaenglish','gpamath','gpascience','highestdegree','highestgradecompleted']
-demolist = ['maritalstatus','childathome','childnotathome','wageincome','weeklyhrscomputer','weeklyhrstv','nightlyhrssleep']
+schoolrecordlist = ['satverbal','satmath','gpaoverall','gpaenglish',
+  'gpamath','gpascience','highestdegree','highestgradecompleted']
+
+demolist = ['maritalstatus','childathome','childnotathome',
+  'wageincome','weeklyhrscomputer','weeklyhrstv','nightlyhrssleep']
 schoolrecord = nls97[schoolrecordlist]
 
 demo = nls97[demolist]
@@ -27,9 +31,11 @@ schoolrecord.shape
 schoolrecord.isnull().sum(axis=1).value_counts().sort_index()
 
 # assign mean values to missings
-int(schoolrecord.gpaoverall.mean())
+schoolrecord.gpaoverall.mean()
 schoolrecord.gpaoverall.isnull().sum()
-schoolrecord.gpaoverall.fillna(int(schoolrecord.gpaoverall.mean()), inplace=True)
+schoolrecord.gpaoverall.\
+  fillna(schoolrecord.gpaoverall.\
+  mean(), inplace=True)
 schoolrecord.gpaoverall.isnull().sum()
 
 # use forward fill

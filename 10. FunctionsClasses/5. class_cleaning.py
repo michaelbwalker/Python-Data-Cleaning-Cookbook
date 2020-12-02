@@ -7,16 +7,16 @@ import pprint
 # import the respondent class
 sys.path.append(os.getcwd() + "/helperfunctions")
 import respondent as rp
-import importlib
-importlib.reload(rp)
+# import importlib
+# importlib.reload(rp)
 pd.set_option('display.width', 150)
 pd.set_option('display.max_columns', 15)
 pd.set_option('display.max_rows', 100)
 
 # load the NLS data and then create a list of dictionaries
-nls97 = pd.read_pickle("data/nls97f.pkl")
+nls97 = pd.read_csv("data/nls97f.csv")
+nls97list = nls97.to_dict('records')
 nls97.shape
-nls97list = nls97.reset_index().to_dict('records')
 len(nls97list)
 pprint.pprint(nls97list[0:1])
 

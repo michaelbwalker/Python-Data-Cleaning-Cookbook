@@ -6,12 +6,13 @@ pd.set_option('display.width', 75)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 20)
 pd.options.display.float_format = '{:,.2f}'.format
-covidtotals = pd.read_pickle("data/covidtotals.pkl")
+covidtotals = pd.read_csv("data/covidtotals.csv",
+  parse_dates=['lastdate'])
+covidtotals.set_index("iso_code", inplace=True)
 
 # look at a few rows of the covid cases data
 covidtotals.shape
-
-covidtotals.sample(2).T
+covidtotals.sample(2, random_state=1).T
 covidtotals.dtypes
 
 # get descriptive statistics on the cumulative values

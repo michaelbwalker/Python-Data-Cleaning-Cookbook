@@ -1,14 +1,14 @@
 # import pandas and scikit learn's KNNImputer module
 import pandas as pd
 from sklearn.impute import KNNImputer
-pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+pd.options.display.float_format = '{:,.1f}'.format
+nls97 = pd.read_csv("data/nls97c.csv")
+nls97.set_index("personid", inplace=True)
 
 # load the NLS school record data
 schoolrecordlist = ['satverbal','satmath','gpaoverall','gpaenglish',
   'gpamath','gpascience','highestgradecompleted']
 schoolrecord = nls97[schoolrecordlist]
-
 
 # initialize a KNN imputation model and fill values
 impKNN = KNNImputer(n_neighbors=5)

@@ -1,8 +1,7 @@
 # import pandas and the land temperatures data
 import pandas as pd
-pd.set_option('display.max_rows', 700)
-countries = pd.read_pickle("data/ltcountries.pkl")
-locations = pd.read_pickle("data/ltlocations.pkl")
+countries = pd.read_csv("data/ltcountries.csv")
+locations = pd.read_csv("data/ltlocations.csv")
 
 # set index for the locations and countries data and print a few rows
 countries.set_index(['countryid'], inplace=True)
@@ -16,8 +15,8 @@ stations = countries.join(locations)
 stations[['locationid','latitude','stnelev','country']].head(10)
 
 # reload the locations file and check the merge
-countries = pd.read_pickle("data/ltcountries.pkl")
-locations = pd.read_pickle("data/ltlocations.pkl")
+countries = pd.read_csv("data/ltcountries.csv")
+locations = pd.read_csv("data/ltlocations.csv")
 def checkmerge(dfleft, dfright, idvar):
   dfleft['inleft'] = "Y"
   dfright['inright'] = "Y"

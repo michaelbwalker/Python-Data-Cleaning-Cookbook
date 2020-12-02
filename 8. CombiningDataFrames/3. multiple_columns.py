@@ -4,8 +4,8 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 100)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97weeksworked = pd.read_pickle("data/nls97weeksworked.pkl")
-nls97colenr = pd.read_pickle("data/nls97colenr.pkl")
+nls97weeksworked = pd.read_csv("data/nls97weeksworked.csv")
+nls97colenr = pd.read_csv("data/nls97colenr.csv")
 
 # look at some of the nls data
 nls97weeksworked.sample(10, random_state=1)

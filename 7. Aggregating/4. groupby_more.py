@@ -3,8 +3,9 @@ import pandas as pd
 pd.set_option('display.width', 90)
 pd.set_option('display.max_columns', 10)
 pd.set_option('display.max_rows', 30)
-pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+pd.options.display.float_format = '{:,.1f}'.format
+nls97 = pd.read_csv("data/nls97b.csv")
+nls97.set_index("personid", inplace=True)
 
 # review the structure of the nls97 data
 nls97.iloc[:,0:7].info()
@@ -13,7 +14,7 @@ nls97.iloc[:,0:7].info()
 catvars = ['gender','maritalstatus','highestdegree']
 
 for col in catvars:
-  print(col, nls97[col].value_counts(sort=False), sep="\n\n", end="\n\n\n")
+  print(col, nls97[col].value_counts().sort_index(), sep="\n\n", end="\n\n\n")
 
 
 # review some descriptive statistics

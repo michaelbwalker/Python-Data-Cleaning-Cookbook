@@ -8,7 +8,7 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 12)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.0f}'.format
-landtemps = pd.read_pickle("data/landtemps2019avgs.pkl")
+landtemps = pd.read_csv("data/landtemps2019avgs.csv")
 
 # run a scatter plot latitude by avgtemp
 plt.scatter(x="latabs", y="avgtemp", data=landtemps)
@@ -60,14 +60,14 @@ plt.tight_layout()
 plt.show()
 
 # check some average temperatures above the regression lines
-high.loc[(high.latabs>38) & (high.avgtemp>=18),\
+high.loc[(high.latabs>38) & (high.avgtemp>=18),
   ['station','country','latabs','elevation','avgtemp']]
-low.loc[(low.latabs>47) & (low.avgtemp>=14),\
+low.loc[(low.latabs>47) & (low.avgtemp>=14),
   ['station','country','latabs','elevation','avgtemp']]
 
 # check some average temperatures below the regression lines
-high.loc[(high.latabs<5) & (high.avgtemp<18),\
+high.loc[(high.latabs<5) & (high.avgtemp<18),
   ['station','country','latabs','elevation','avgtemp']]
-low.loc[(low.latabs<50) & (low.avgtemp<-9),\
+low.loc[(low.latabs<50) & (low.avgtemp<-9),
   ['station','country','latabs','elevation','avgtemp']]
 

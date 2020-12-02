@@ -4,12 +4,13 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.2f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
+nls97 = pd.read_csv("data/nls97b.csv")
+nls97.set_index("personid", inplace=True)
 
-# divide all values of a series by a scalar
+# multiply all values of a series by a scalar
 nls97.gpaoverall.head()
-nls97['gpaoverall'] = nls97['gpaoverall'] / 100
-nls97.gpaoverall.head()
+gpaoverall100 = nls97['gpaoverall'] * 100
+gpaoverall100.head()
 
 # use loc accessor to apply a scalar to selected rows
 nls97.loc[[100061], 'gpaoverall'] = 3

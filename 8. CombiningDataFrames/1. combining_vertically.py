@@ -8,13 +8,12 @@ pd.set_option('display.max_rows', 50)
 pd.options.display.float_format = '{:,.0f}'.format
 
 # load the data for Cameroon and Poland
-ltcameroon = pd.read_pickle("data/ltcountry/ltcameroon.pkl")
-ltpoland = pd.read_pickle("data/ltcountry/ltpoland.pkl")
+ltcameroon = pd.read_csv("data/ltcountry/ltcameroon.csv")
+ltpoland = pd.read_csv("data/ltcountry/ltpoland.csv")
 
 # concatenate the Cameroon and Poland data
 ltcameroon.shape
 ltpoland.shape
-ltcameroon.shape[0]
 ltall = pd.concat([ltcameroon, ltpoland])
 ltall.country.value_counts()
 
@@ -22,12 +21,12 @@ ltall.country.value_counts()
 directory = "data/ltcountry"
 ltall = pd.DataFrame()
 for filename in os.listdir(directory):
-  if filename.endswith(".pkl"): 
+  if filename.endswith(".csv"): 
     fileloc = os.path.join(directory, filename)
 
     # open the next file
     with open(fileloc) as f:
-      ltnew = pd.read_pickle(fileloc)
+      ltnew = pd.read_csv(fileloc)
       print(filename + " has " + str(ltnew.shape[0]) + " rows.")
       ltall = pd.concat([ltall, ltnew])
 
@@ -38,7 +37,7 @@ for filename in os.listdir(directory):
           columndiff, "", sep="\n")
 
 
-ltall[['country','station','month','temperature','latitude']].head()
+ltall[['country','station','month','temperature','latitude']].sample(5, random_state=1)
 
 # check values in the concatenated data
 ltall.country.value_counts().sort_index()

@@ -1,11 +1,9 @@
 # import pandas and the CMA collections data
 import pandas as pd
-pd.set_option('display.max_rows', 700)
 pd.options.display.float_format = '{:,.0f}'.format
-cma = pd.read_pickle("data/cmacollections.pkl")
+cma = pd.read_csv("data/cmacollections.csv")
 
 # show the cma collections data
-cma.reset_index(inplace=True)
 cma.shape
 cma.head(2).T
 cma.id.nunique()
@@ -31,7 +29,6 @@ cmacitations = cma[['citation']].\
   reset_index().\
   drop_duplicates(['id','citation']).\
   set_index(['id'])
-cmacitations.shape
 cmacitations.loc[124733]
 
 # create a creators data frame

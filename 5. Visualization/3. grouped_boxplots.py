@@ -6,11 +6,12 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
-covidtotals = pd.read_pickle("data/covidtotals720.pkl")
+nls97 = pd.read_csv("data/nls97.csv")
+nls97.set_index("personid", inplace=True)
+covidtotals = pd.read_csv("data/covidtotals.csv", parse_dates=["lastdate"])
+covidtotals.set_index("iso_code", inplace=True)
 
-
-
+# view some descriptive statistics
 def gettots(x):
   out = {}
   out['min'] = x.min()
@@ -25,7 +26,8 @@ nls97.groupby(['highestdegree'])['weeksworked17'].\
   apply(gettots).unstack()
 
 # do boxplots for weeks worked by highest degree earned
-myplt = sns.boxplot('highestdegree','weeksworked17', data=nls97)
+myplt = sns.boxplot('highestdegree','weeksworked17', data=nls97,
+  order=sorted(nls97.highestdegree.dropna().unique()))
 myplt.set_title("Boxplots of Weeks Worked by Highest Degree")
 myplt.set_xlabel('Highest Degree Attained')
 myplt.set_ylabel('Weeks Worked 2017')
@@ -33,7 +35,7 @@ myplt.set_xticklabels(myplt.get_xticklabels(), rotation=60, horizontalalignment=
 plt.tight_layout()
 plt.show()
 
-
+# view minimum, maximum, median, and first and third quartile values
 covidtotals.groupby(['region'])['total_cases_pm'].\
   apply(gettots).unstack()
 

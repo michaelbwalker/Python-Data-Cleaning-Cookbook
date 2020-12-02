@@ -4,7 +4,7 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.2f}'.format
-covidcases = pd.read_pickle("data/covidcases720b.pkl")
+covidcases = pd.read_csv("data/covidcases720.csv")
 
 # create lists for daily cases, for cumulative columns and for demographic columns
 dailyvars = ['casedate','new_cases','new_deaths']

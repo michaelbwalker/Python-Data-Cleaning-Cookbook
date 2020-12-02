@@ -4,8 +4,9 @@ pd.set_option('display.width', 80)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 100)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97f.pkl")
-nls97add = pd.read_pickle("data/nls97add.pkl")
+nls97 = pd.read_csv("data/nls97f.csv")
+nls97.set_index("personid", inplace=True)
+nls97add = pd.read_csv("data/nls97add.csv")
 
 # look at some of the nls data
 nls97.head()

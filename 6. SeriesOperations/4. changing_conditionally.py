@@ -5,10 +5,12 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.2f}'.format
-nls97 = pd.read_pickle("data/nls97.pkl")
-landtemps = pd.read_pickle("data/landtemps2019avgs.pkl")
+nls97 = pd.read_csv("data/nls97b.csv")
+nls97.set_index("personid", inplace=True)
+landtemps = pd.read_csv("data/landtemps2019avgs.csv")
 
 # use the numpy where function to create a categorical series with 2 values
+
 landtemps.elevation.quantile(np.arange(0.2,1.1,0.2))
 
 landtemps['elevation_group'] = np.where(landtemps.elevation>\
@@ -25,7 +27,7 @@ landtemps.elevation_group = landtemps.elevation_group.astype('category')
 landtemps.groupby(['elevation_group'])['elevation'].agg(['count','min','max'])
 
 # use numpy select to evaluate a list of conditions
-test = [(nls97.gpaoverall<200) & (nls97.highestdegree=='0. None'), nls97.highestdegree=='0. None', nls97.gpaoverall<200]
+test = [(nls97.gpaoverall<2) & (nls97.highestdegree=='0. None'), nls97.highestdegree=='0. None', nls97.gpaoverall<2]
 result = ['1. Low GPA and No Diploma','2. No Diploma','3. Low GPA']
 nls97['hsachieve'] = np.select(test, result, '4. Did Okay')
 nls97[['hsachieve','gpaoverall','highestdegree']].head()

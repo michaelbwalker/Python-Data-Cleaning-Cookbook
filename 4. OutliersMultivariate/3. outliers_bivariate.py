@@ -6,11 +6,11 @@ import seaborn as sns
 pd.set_option('display.width', 75)
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 20)
-pd.options.display.float_format = '{:,.0f}'.format
-covidtotals = pd.read_pickle("data/covidtotals.pkl")
+pd.options.display.float_format = '{:,.2f}'.format
+covidtotals = pd.read_csv("data/covidtotals.csv")
+covidtotals.set_index("iso_code", inplace=True)
 
 # set up the cumulative and demographic columns
-
 totvars = ['location','total_cases','total_deaths','total_cases_pm',
   'total_deaths_pm']
 demovars = ['population','pop_density','median_age','gdp_per_capita',
@@ -23,12 +23,17 @@ covidtotals.corr(method="pearson")
 covidtotalsonly = covidtotals.loc[:, totvars]
 
 # see if some countries have unexpected low or high death rates given number of cases
-covidtotalsonly['total_cases_q'] = pd.qcut(covidtotalsonly['total_cases'],
-  labels=['very low','low','medium','high','very high'], q=5, precision=0)
-covidtotalsonly['total_deaths_q'] = pd.qcut(covidtotalsonly['total_deaths'],
-  labels=['very low','low','medium','high','very high'], q=5, precision=0)
+covidtotalsonly['total_cases_q'] = pd.\
+  qcut(covidtotalsonly['total_cases'],
+  labels=['very low','low','medium',
+  'high','very high'], q=5, precision=0)
+covidtotalsonly['total_deaths_q'] = pd.\
+  qcut(covidtotalsonly['total_deaths'],
+  labels=['very low','low','medium',
+  'high','very high'], q=5, precision=0)
 
-pd.crosstab(covidtotalsonly.total_cases_q, covidtotalsonly.total_deaths_q)
+pd.crosstab(covidtotalsonly.total_cases_q,
+  covidtotalsonly.total_deaths_q)
 
 covidtotals.loc[(covidtotalsonly.total_cases_q=="very high") & (covidtotalsonly.total_deaths_q=="medium")].T
 covidtotals.loc[(covidtotalsonly.total_cases_q=="low") & (covidtotalsonly.total_deaths_q=="high")].T

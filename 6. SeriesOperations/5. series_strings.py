@@ -5,7 +5,8 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 200)
 pd.options.display.float_format = '{:,.2f}'.format
-nls97 = pd.read_pickle("data/nls97c.pkl")
+nls97 = pd.read_csv("data/nls97c.csv")
+nls97.set_index("personid", inplace=True)
 
 # tests whether a string pattern exists in a string
 nls97.govprovidejobs.value_counts()
@@ -27,6 +28,7 @@ pd.crosstab(nls97.highestdegree, nls97.receivedba)
 # convert a text response to numeric using numbers in the text
 pd.concat([nls97.weeklyhrstv.head(),\
   nls97.weeklyhrstv.str.findall("\d+").head()], axis=1)
+
 def getnum(numlist):
   highval = 0
   if (type(numlist) is list):

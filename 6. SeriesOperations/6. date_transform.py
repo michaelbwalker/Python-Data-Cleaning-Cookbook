@@ -1,4 +1,4 @@
-# import pandas, matplotlib, and statsmodels
+# import pandas
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -6,15 +6,14 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 35)
 pd.set_option('display.max_rows', 220)
 pd.options.display.float_format = '{:,.0f}'.format
-nls97 = pd.read_pickle("data/nls97c.pkl")
-covidcases = pd.read_pickle("data/covidcases720b.pkl")
+covidcases = pd.read_csv("data/covidcases720.csv")
+nls97 = pd.read_csv("data/nls97c.csv")
+nls97.set_index("personid", inplace=True)
 
 # show the birth month and year values
-
 nls97[['birthmonth','birthyear']].head()
 nls97[['birthmonth','birthyear']].isnull().sum()
 nls97.birthmonth.value_counts().sort_index()
-nls97.birthmonth
 nls97.birthyear.value_counts().sort_index()
 
 # use fillna to fix missing value

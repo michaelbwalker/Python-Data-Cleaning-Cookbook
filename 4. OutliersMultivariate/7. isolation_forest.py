@@ -7,7 +7,8 @@ pd.set_option('display.max_columns', 7)
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import IsolationForest
 from mpl_toolkits.mplot3d import Axes3D
-covidtotals = pd.read_pickle("data/covidtotals.pkl")
+covidtotals = pd.read_csv("data/covidtotals.csv")
+covidtotals.set_index("iso_code", inplace=True)
 
 # create a standardized analysis data frame
 analysisvars = ['location','total_cases_pm','total_deaths_pm',

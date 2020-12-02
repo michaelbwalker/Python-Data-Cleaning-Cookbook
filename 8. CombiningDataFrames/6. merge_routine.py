@@ -1,8 +1,7 @@
 # import pandas and the land temperatures data
 import pandas as pd
-pd.set_option('display.max_rows', 700)
-countries = pd.read_pickle("data/ltcountries.pkl")
-locations = pd.read_pickle("data/ltlocations.pkl")
+countries = pd.read_csv("data/ltcountries.csv")
+locations = pd.read_csv("data/ltlocations.csv")
 
 # check the merge-by column matches
 def checkmerge(dfleft, dfright, mergebyleft, mergebyright):
