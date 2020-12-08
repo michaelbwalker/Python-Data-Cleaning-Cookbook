@@ -1,6 +1,8 @@
 # import pandas, json, pprint, and requests
 import pandas as pd
 import json
+import os
+import sys
 import pprint
 import requests
 #import importlib
@@ -10,7 +12,6 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_columns', 8)
 
 # import the collection items module
-
 sys.path.append(os.getcwd() + "/helperfunctions")
 import collectionitem as ci
 
